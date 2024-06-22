@@ -1,12 +1,12 @@
 import os, sys, time
 
 # Constants for the block characters used to represent pixels:
-TOP_BLOCK    = chr(9600)
+TOP_BLOCK = chr(9600)
 BOTTOM_BLOCK = chr(9604)
-FULL_BLOCK   = chr(9608)
+FULL_BLOCK = chr(9608)
 
 DELAY = 0.05
-FUNC = eval('lambda x, y: (x | y) % 7')
+FUNC = eval("lambda x, y: (x | y) % 7")
 
 
 y = 0
@@ -21,13 +21,13 @@ while True:
         bottomBit = not bottomBit
 
         if topBit and bottomBit:
-            print(FULL_BLOCK, end='')
+            print(FULL_BLOCK, end="")
         elif topBit and not bottomBit:
-            print(TOP_BLOCK, end='')
+            print(TOP_BLOCK, end="")
         elif not topBit and bottomBit:
-            print(BOTTOM_BLOCK, end='')
+            print(BOTTOM_BLOCK, end="")
         else:
-            print(' ', end='')
+            print(" ", end="")
     print(flush=True)
 
     y += 2

@@ -1,16 +1,23 @@
 import random, time, shutil, os
+from pythonosc import udp_client
 
-os.system('cls | clear')  # Clear the screen
+ip = "10.100.5.129"
+port = 5005
+client = udp_client.SimpleUDPClient(ip, port)
+
+os.system("cls | clear")  # Clear the screen
+
+buf = []
 
 # Constants for settings:
 DELAY = 0.01  # Pause after each row in seconds.
-WIDTH = shutil.get_terminal_size()[0] - 1  # Number of columns in output.
-NUM_STREAMS = 5  # Number of streams on the screen.
+WIDTH = 96
+NUM_STREAMS = 8  # Number of streams on the screen.
 MAX_DISTANCE = NUM_STREAMS * 4  # How many spaces streams must be within each other.
 MOVE_CHANCE = 0.75  # How often a stream tries to move left or right, rather than continue straight.
 
-EMPTY_CHAR = ' '
-STREAM_CHARS = 'oO@'
+EMPTY_CHAR = "0"
+STREAM_CHARS = "1"
 
 """
 SPARK_CHARS = '...,'
@@ -30,12 +37,18 @@ try:
         for i, stream in enumerate(streams):
             if random.random() < MOVE_CHANCE:
                 # Move stream:
-                if random.random() < 0.5:  # There seems to be some bias to random.random() where 0.5 doesn't work as a 50/50?
-                    if stream > 0 and all([abs((stream - 1) - other) <= MAX_DISTANCE for other in streams]):
+                if (
+                    random.random() < 0.5
+                ):  # There seems to be some bias to random.random() where 0.5 doesn't work as a 50/50?
+                    if stream > 0 and all(
+                        [abs((stream - 1) - other) <= MAX_DISTANCE for other in streams]
+                    ):
                         # Move stream left:
                         streams[i] -= 1
                 else:
-                    if stream < WIDTH - 1 and all([abs((stream + 1) - other) <= MAX_DISTANCE for other in streams]):
+                    if stream < WIDTH - 1 and all(
+                        [abs((stream + 1) - other) <= MAX_DISTANCE for other in streams]
+                    ):
                         # Move stream right:
                         streams[i] += 1
 
@@ -57,8 +70,12 @@ try:
                     columns[x] = random.choice(SPARK_CHARS)
         """
 
-        print(''.join(columns))
+        print("".join(columns))
+        buf.append("".join(columns))
+        if len(buf) > 38:
+            buf.pop(0)
+            client.send_message("/aggregate", "".join(buf))
         time.sleep(DELAY)
 
 except KeyboardInterrupt:
-    print('Proton Stream, by Al Sweigart al@inventwithpython.com 2024')
+    print("Proton Stream, by Al Sweigart al@inventwithpython.com 2024")

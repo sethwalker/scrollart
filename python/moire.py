@@ -5,7 +5,7 @@ WIDTH = os.get_terminal_size()[0] - 1
 DELAY = 0.2
 MOIRE_CHAR = ":"
 
-os.system('cls | clear')
+os.system("cls | clear")
 
 
 def get_moire(radius, centerx, centery):
@@ -17,21 +17,21 @@ def get_moire(radius, centerx, centery):
 
     while cx <= cy:
         # first quarter first octant
-        img[(cx + centerx,-cy + centery)] = MOIRE_CHAR
+        img[(cx + centerx, -cy + centery)] = MOIRE_CHAR
         # first quarter 2nd octant
-        img[(cy + centerx,-cx + centery)] = MOIRE_CHAR
+        img[(cy + centerx, -cx + centery)] = MOIRE_CHAR
         # second quarter 3rd octant
-        img[(cy + centerx,cx + centery)] = MOIRE_CHAR
+        img[(cy + centerx, cx + centery)] = MOIRE_CHAR
         # second quarter 4.octant
-        img[(cx + centerx,cy + centery)] = MOIRE_CHAR
+        img[(cx + centerx, cy + centery)] = MOIRE_CHAR
         # third quarter 5.octant
-        img[(-cx + centerx,cy + centery)] = MOIRE_CHAR
+        img[(-cx + centerx, cy + centery)] = MOIRE_CHAR
         # third quarter 6.octant
-        img[(-cy + centerx,cx + centery)] = MOIRE_CHAR
+        img[(-cy + centerx, cx + centery)] = MOIRE_CHAR
         # fourth quarter 7.octant
-        img[(-cy + centerx,-cx + centery)] = MOIRE_CHAR
+        img[(-cy + centerx, -cx + centery)] = MOIRE_CHAR
         # fourth quarter 8.octant
-        img[(-cx + centerx,-cy + centery)] = MOIRE_CHAR
+        img[(-cx + centerx, -cy + centery)] = MOIRE_CHAR
         if switch < 0:
             switch = switch + (4 * cx) + 6
         else:
@@ -68,28 +68,28 @@ def normalize_img(img):
     return normalized, maxx + 1, maxy + 1
 
 
-
 def print_img(img, maxx, maxy):
     for y in range(maxy + 1):
         for x in range(maxx + 1):
             if (x, y) in img:
-                print(img[(x, y)], end='')
+                print(img[(x, y)], end="")
             else:
-                print(' ', end='')
+                print(" ", end="")
         print()
+
 
 img = {}
 for i in range(20):
     img.update(get_moire(i, 20, 20))
-#print_img(*normalize_img(img))
+# print_img(*normalize_img(img))
 print_img(img, 40, 40)
-import sys;sys.exit()
-try:    
+import sys
+
+sys.exit()
+try:
     while True:
 
         time.sleep(DELAY)
-        
+
 except KeyboardInterrupt:
-    print('Moire, by Al Sweigart al@inventwithpython.com 2024')
-
-
+    print("Moire, by Al Sweigart al@inventwithpython.com 2024")
